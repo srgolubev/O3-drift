@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{% url 'organizations' %}" class="text-decoration-none">Организации</a></li>
+<li class="breadcrumb-item active" aria-current="page">Создание</li>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header text-center">
+                    <h2 class="mb-0">Создание организации</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Логотип организации -->
+                        <div class="text-center mb-4">
+                            <div class="mb-3">
+                                <div id="logo-preview-container" class="mb-3">
+                                    <div class="bg-secondary rounded d-flex align-items-center justify-content-center mx-auto" 
+                                         id="logo-preview-placeholder" style="width: 200px; height: 200px;">
+                                        <span class="text-white">Логотип организации</span>
+                                    </div>
+                                </div>
+                                <div class="mt-2">
+                                    {{ form.logo }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Основная информация -->
+                        <div class="mb-4">
+                            <div class="form-group mb-3">
+                                <label class="form-label">{{ form.name.label }}</label>
+                                {{ form.name }}
+                                {% if form.name.errors %}
+                                    <div class="text-danger small">{{ form.name.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label class="form-label">{{ form.abbreviation.label }}</label>
+                                {{ form.abbreviation }}
+                                {% if form.abbreviation.errors %}
+                                    <div class="text-danger small">{{ form.abbreviation.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label class="form-label">{{ form.description.label }}</label>
+                                {{ form.description }}
+                                {% if form.description.errors %}
+                                    <div class="text-danger small">{{ form.description.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary px-4 py-2">
+                                Создать организацию
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Скрипт для превью логотипа -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const logoInput = document.getElementById('id_logo');
+        const previewContainer = document.getElementById('logo-preview-container');
+        const placeholder = document.getElementById('logo-preview-placeholder');
+
+        if (logoInput) {
+            logoInput.classList.add('form-control');
+            
+            logoInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        let preview = document.getElementById('logo-preview');
+                        if (!preview) {
+                            preview = document.createElement('img');
+                            preview.id = 'logo-preview';
+                            preview.className = 'rounded mb-2';
+                            preview.style = 'max-width: 200px; max-height: 200px; object-fit: contain;';
+                            previewContainer.insertBefore(preview, placeholder);
+                            placeholder.style.display = 'none';
+                        }
+                        preview.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // Добавляем классы Bootstrap к полям формы
+        document.querySelectorAll('input[type="text"], textarea').forEach(input => {
+            input.classList.add('form-control');
+        });
+    });
+</script>
+{% endblock %}

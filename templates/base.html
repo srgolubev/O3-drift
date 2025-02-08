@@ -1,24 +1,122 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="ru" data-bs-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <title>Drift Competition Portal</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Drift Competition Portal{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --bs-primary: #ffc107;
+            --bs-primary-rgb: 255, 193, 7;
+            --bs-link-color: #ffc107;
+            --bs-link-hover-color: #ffca2c;
+        }
+        body {
+            background-color: #1a1d20;
+            color: #e9ecef;
+        }
+        .card {
+            background-color: #212529;
+            border-color: #343a40;
+        }
+        .navbar {
+            background-color: #212529 !important;
+            border-bottom: 1px solid #343a40 !important;
+        }
+        .navbar-brand {
+            color: #ffc107 !important;
+        }
+        .nav-link {
+            color: #e9ecef !important;
+        }
+        .nav-link:hover {
+            color: #ffc107 !important;
+        }
+        .btn-primary {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            color: #000;
+        }
+        .btn-primary:hover {
+            background-color: #ffca2c;
+            border-color: #ffca2c;
+            color: #000;
+        }
+        .text-muted {
+            color: #adb5bd !important;
+        }
+        .border {
+            border-color: #343a40 !important;
+        }
+        .border-bottom {
+            border-bottom-color: #343a40 !important;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        {% if user.is_authenticated %}
-            <a href="{% url 'profile' %}">Профиль</a> |
-            <a href="{% url 'logout' %}">Выйти</a>
-        {% else %}
-            <a href="{% url 'login' %}">Войти</a> |
-            <a href="{% url 'register' %}">Регистрация</a>
-        {% endif %}
-    </header>
-    <hr/>
+    <!-- Навигационная панель -->
+    <nav class="navbar navbar-expand-lg mb-0">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">Drift Competition Portal</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}"><i class="bi bi-house"></i> Главная</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'organizations' %}"><i class="bi bi-building"></i> Организации</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'competitions' %}"><i class="bi bi-trophy"></i> Соревнования</a>
+                    </li>
+                </ul>
+                {% if user.is_authenticated %}
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{% url 'profile' %}">Профиль</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'logout' %}">Выход</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                {% else %}
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Вход</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">Регистрация</a>
+                    </li>
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breadcrumbs -->
+    <div class="bg-dark border-bottom border-secondary mb-4">
+        <div class="container py-2">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none">Главная</a></li>
+                    {% block breadcrumbs %}{% endblock %}
+                </ol>
+            </nav>
+        </div>
+    </div>
     <main>
         {% block content %}{% endblock %}
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

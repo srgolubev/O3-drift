@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{% url 'organizations' %}" class="text-decoration-none">Организации</a></li>
+<li class="breadcrumb-item"><a href="{% url 'organization_detail' organization.id %}" class="text-decoration-none">{{ organization.name }}</a></li>
+<li class="breadcrumb-item active" aria-current="page">Редактирование</li>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header text-center">
+                    <h2 class="mb-0">Редактирование организации</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            {% if organization.logo %}
+                                <div class="text-center mb-3">
+                                    <img src="{{ organization.logo.url }}" alt="{{ organization.name }} logo" 
+                                         class="img-fluid" style="max-height: 150px;">
+                                </div>
+                            {% endif %}
+
+                            <div class="form-group mb-3">
+                                <label class="form-label">{{ form.name.label }}</label>
+                                {{ form.name }}
+                                {% if form.name.errors %}
+                                    <div class="text-danger small">{{ form.name.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label class="form-label">{{ form.abbreviation.label }}</label>
+                                {{ form.abbreviation }}
+                                {% if form.abbreviation.errors %}
+                                    <div class="text-danger small">{{ form.abbreviation.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label class="form-label">{{ form.description.label }}</label>
+                                {{ form.description }}
+                                {% if form.description.errors %}
+                                    <div class="text-danger small">{{ form.description.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label class="form-label">{{ form.logo.label }}</label>
+                                {{ form.logo }}
+                                {% if form.logo.errors %}
+                                    <div class="text-danger small">{{ form.logo.errors }}</div>
+                                {% endif %}
+                                <div class="form-text">Загрузите новый логотип, если хотите заменить текущий</div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'organization_detail' organization.id %}" class="btn btn-secondary">
+                                Отмена
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                Сохранить изменения
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Добавляем классы Bootstrap к полям формы
+        document.querySelectorAll('input[type="text"], textarea').forEach(input => {
+            input.classList.add('form-control');
+        });
+        
+        // Стилизуем поле для загрузки файла
+        const fileInput = document.querySelector('input[type="file"]');
+        if (fileInput) {
+            fileInput.classList.add('form-control');
+        }
+    });
+</script>
+{% endblock %}

@@ -1,19 +1,145 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Профиль пользователя</h2>
-<p>Добро пожаловать, {{ user.username }}!</p>
+<div class="container py-5">
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header text-center">
+                    <h2>Профиль</h2>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        {% if user.profile.avatar %}
+                            <img src="{{ user.profile.avatar.url }}" alt="Avatar" class="rounded-circle mb-3" style="width: 120px; height: 120px; object-fit: cover;">
+                        {% else %}
+                            <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 120px; height: 120px;">
+                                <span class="text-white">Нет аватара</span>
+                            </div>
+                        {% endif %}
+                        <h4>{{ user.username }}</h4>
+                        <p class="text-muted">{{ user.email }}</p>
+                        
+                        <!-- Public ID с кнопкой копирования -->
+                        <div class="d-flex justify-content-center align-items-center gap-2">
+                            <div class="input-group" style="max-width: 300px;">
+                                <span class="input-group-text">ID</span>
+                                <input type="text" class="form-control" value="{{ user.public_id }}" id="publicId" readonly>
+                                <button class="btn btn-outline-primary" type="button" onclick="copyPublicId()" title="Скопировать ID">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
 
-{% if is_organizer %}
-  <h3>Мои организации</h3>
-  {% if organizations %}
-    <ul>
-      {% for org in organizations %}
-        <li>{{ org.name }}</li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>У вас пока нет организаций.</p>
-  {% endif %}
-  <a href="{% url 'organization_create' %}" class="button">Создать новую организацию</a>
-{% endif %}
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <div class="border rounded p-3">
+                                <p class="mb-2"><strong>Никнейм:</strong> {{ user.profile.nickname }}</p>
+                                <p class="mb-2"><strong>Имя:</strong> {{ user.profile.first_name }}</p>
+                                <p class="mb-2"><strong>Фамилия:</strong> {{ user.profile.last_name }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="border rounded p-3">
+                                <p class="mb-2"><strong>Год рождения:</strong> {{ user.profile.birth_year }}</p>
+                                <p class="mb-2"><strong>Страна:</strong> {{ user.profile.country }}</p>
+                                <p class="mb-2"><strong>Город:</strong> {{ user.profile.city }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border rounded p-3 mb-4">
+                        <h5>Биография</h5>
+                        <p class="mb-0">{{ user.profile.biography|linebreaks }}</p>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <div class="border rounded p-3">
+                                <p class="mb-0"><strong>Steam:</strong> <a href="{{ user.profile.steam }}" target="_blank">{{ user.profile.steam }}</a></p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="border rounded p-3">
+                                <p class="mb-0"><strong>VK:</strong> <a href="{{ user.profile.vk }}" target="_blank">{{ user.profile.vk }}</a></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <a href="{% url 'profile_edit' %}" class="btn btn-primary px-4">Редактировать профиль</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow mt-4">
+                <div class="card-header">
+                    <h3 class="mb-0">Мои организации</h3>
+                </div>
+                <div class="card-body">
+                    {% if organizations %}
+                        <div class="row g-3">
+                            {% for org in organizations %}
+                                <div class="col-md-6">
+                                    <div class="card h-100">
+                                        {% if org.logo %}
+                                            <img src="{{ org.logo.url }}" class="card-img-top" alt="{{ org.name }} logo" style="height: 140px; object-fit: contain; padding: 10px;">
+                                        {% endif %}
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ org.name }}</h5>
+                                            <p class="card-text small text-muted">{{ org.abbreviation }}</p>
+                                            <p class="card-text">{{ org.description|truncatewords:20 }}</p>
+                                            <a href="{% url 'organization_detail' org.id %}" class="btn btn-primary btn-sm">Управление</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted text-center mb-3">У вас пока нет организаций</p>
+                    {% endif %}
+                    <div class="text-center mt-3">
+                        <a href="{% url 'organization_create' %}" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>Создать организацию
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            {% if user.profile.competition_photo %}
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title text-center mb-3">Фото для соревнований</h5>
+                    <img src="{{ user.profile.competition_photo.url }}" alt="Competition Photo" class="img-fluid rounded mx-auto d-block" style="max-width: 100%; height: auto;">
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function copyPublicId() {
+    const publicIdInput = document.getElementById('publicId');
+    publicIdInput.select();
+    document.execCommand('copy');
+    
+    // Показываем уведомление об успешном копировании
+    const copyButton = publicIdInput.nextElementSibling;
+    const originalHTML = copyButton.innerHTML;
+    copyButton.innerHTML = '<i class="fas fa-check"></i>';
+    copyButton.classList.remove('btn-outline-primary');
+    copyButton.classList.add('btn-success');
+    
+    setTimeout(() => {
+        copyButton.innerHTML = originalHTML;
+        copyButton.classList.remove('btn-success');
+        copyButton.classList.add('btn-outline-primary');
+    }, 2000);
+}
+</script>
 {% endblock %}

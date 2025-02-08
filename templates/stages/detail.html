@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{% url 'organizations' %}" class="text-decoration-none">Организации</a></li>
+<li class="breadcrumb-item"><a href="{% url 'organization_detail' stage.competition.organization.id %}" class="text-decoration-none">{{ stage.competition.organization.name }}</a></li>
+<li class="breadcrumb-item"><a href="{% url 'competition_detail' stage.competition.id %}" class="text-decoration-none">{{ stage.competition.name }}</a></li>
+<li class="breadcrumb-item active" aria-current="page">{{ stage.name }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="card shadow">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="mb-0">{{ stage.name }}</h2>
+                {% if user == stage.competition.organization.created_by %}
+                    <a href="{% url 'stage_edit' stage.id %}" class="btn btn-primary">
+                        Редактировать
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <p><strong>Соревнование:</strong> 
+                        <a href="{% url 'competition_detail' stage.competition.id %}">
+                            {{ stage.competition.name }}
+                        </a>
+                    </p>
+                    <p><strong>Трасса:</strong> {{ stage.track_name }}</p>
+                    {% if stage.track_link %}
+                        <p><strong>Ссылка на трассу:</strong> 
+                            <a href="{{ stage.track_link }}" target="_blank">{{ stage.track_link }}</a>
+                        </p>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Слотов:</strong> {{ stage.registration_slots|default:"Без ограничений" }}</p>
+                    <p><strong>Создано:</strong> {{ stage.created_at|date:"d.m.Y H:i" }}</p>
+                    <p><strong>Обновлено:</strong> {{ stage.updated_at|date:"d.m.Y H:i" }}</p>
+                </div>
+            </div>
+
+            {% if stage.technical_regulations %}
+                <div class="mb-4">
+                    <h4>Технический регламент</h4>
+                    <div class="border rounded p-3">
+                        {{ stage.technical_regulations|linebreaks }}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if stage.tech_reg_file %}
+                <div class="mb-4">
+                    <h4>Файл технического регламента</h4>
+                    <a href="{{ stage.tech_reg_file.url }}" class="btn btn-outline-primary" target="_blank">
+                        <i class="fas fa-download me-2"></i>Скачать
+                    </a>
+                </div>
+            {% endif %}
+
+            {% if stage.judging_criteria %}
+                <div class="mb-4">
+                    <h4>Судейское задание</h4>
+                    <img src="{{ stage.judging_criteria.url }}" class="img-fluid rounded" alt="Судейское задание">
+                </div>
+            {% endif %}
+
+            {% if stage.video_link %}
+                <div class="mb-4">
+                    <h4>Видео</h4>
+                    <a href="{{ stage.video_link }}" class="btn btn-outline-primary" target="_blank">
+                        <i class="fas fa-play me-2"></i>Смотреть
+                    </a>
+                </div>
+            {% endif %}
+
+            <div class="mb-4">
+                <h4>Расписание</h4>
+                <div class="border rounded p-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Регистрация</h5>
+                            <p><strong>Начало:</strong> {{ stage.registration_start|date:"d.m.Y H:i" }}</p>
+                            <p><strong>Окончание:</strong> {{ stage.registration_end|date:"d.m.Y H:i" }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Заезды</h5>
+                            <p><strong>Квалификация:</strong> {{ stage.qualification_start|date:"d.m.Y H:i" }}</p>
+                            <p><strong>Парные заезды:</strong> {{ stage.battles_start|date:"d.m.Y H:i" }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                {% if stage.judges.exists %}
+                    <div class="col-md-6 col-lg-3">
+                        <h5>Судьи</h5>
+                        <ul class="list-unstyled">
+                            {% for judge in stage.judges.all %}
+                                <li>{{ judge.username }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                {% if stage.marshals.exists %}
+                    <div class="col-md-6 col-lg-3">
+                        <h5>Маршалы</h5>
+                        <ul class="list-unstyled">
+                            {% for marshal in stage.marshals.all %}
+                                <li>{{ marshal.username }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                {% if stage.commentators.exists %}
+                    <div class="col-md-6 col-lg-3">
+                        <h5>Комментаторы</h5>
+                        <ul class="list-unstyled">
+                            {% for commentator in stage.commentators.all %}
+                                <li>{{ commentator.username }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                {% if stage.streamers.exists %}
+                    <div class="col-md-6 col-lg-3">
+                        <h5>Стримеры</h5>
+                        <ul class="list-unstyled">
+                            {% for streamer in stage.streamers.all %}
+                                <li>{{ streamer.username }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

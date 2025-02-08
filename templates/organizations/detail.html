@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{% url 'organizations' %}" class="text-decoration-none">Организации</a></li>
+<li class="breadcrumb-item active" aria-current="page">{{ organization.name }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Шапка организации -->
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-md-2 text-center">
+                    {% if organization.logo %}
+                        <img src="{{ organization.logo.url }}" alt="{{ organization.name }} logo" 
+                             class="img-fluid rounded" style="max-height: 120px; width: auto;">
+                    {% else %}
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-center" 
+                             style="height: 120px; width: 120px;">
+                            <span class="text-white">Нет логотипа</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-md-10">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h1 class="mb-2">{{ organization.name }}</h1>
+                            <p class="text-muted mb-2">{{ organization.abbreviation }}</p>
+                            <p class="mb-0">{{ organization.description }}</p>
+                        </div>
+                        {% if user == organization.created_by %}
+                            <div>
+                                <a href="{% url 'organization_edit' organization.id %}" class="btn btn-primary btn-sm">
+                                    Редактировать
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Соревнования -->
+    <div class="card shadow">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">Соревнования</h3>
+            {% if user == organization.created_by %}
+                <a href="{% url 'competition_create' organization.id %}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Создать соревнование
+                </a>
+            {% endif %}
+        </div>
+        <div class="card-body">
+            {% if competitions %}
+                <div class="row g-4">
+                    {% for competition in competitions %}
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ competition.name }}</h5>
+                                    <p class="card-text text-muted small mb-2">
+                                        Платформа: {{ competition.platform }}
+                                    </p>
+                                    <p class="card-text text-muted small mb-2">
+                                        Статус: 
+                                        {% if competition.is_active %}
+                                            <span class="badge bg-success">Активно</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">Завершено</span>
+                                        {% endif %}
+                                    </p>
+                                    <p class="card-text">{{ competition.description|truncatewords:30 }}</p>
+                                    <div class="mt-3">
+                                        <a href="{% url 'competition_detail' competition.id %}" 
+                                           class="btn btn-primary btn-sm">Подробнее</a>
+                                        {% if user == organization.created_by %}
+                                            <a href="{% url 'competition_edit' competition.id %}" 
+                                               class="btn btn-outline-primary btn-sm">Управление</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-muted text-center mb-0">Соревнования пока не созданы</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

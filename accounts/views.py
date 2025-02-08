@@ -23,25 +23,24 @@ def register(request):
 
 @login_required
 def profile(request):
-    is_organizer = request.user.groups.filter(name='Organizers').exists()
-    organizations = []
-    if is_organizer:
-        from core.models import Organization
-        organizations = Organization.objects.filter(created_by=request.user)
-    return render(request, 'accounts/profile.html', {'organizations': organizations, 'is_organizer': is_organizer})
+    organizations = Organization.objects.filter(created_by=request.user)
+    return render(request, 'accounts/profile.html', {'organizations': organizations})
 
 # --- Begin profile_edit view ---
 @login_required
 def profile_edit(request):
-    from .forms import UserProfileForm
-    from django.shortcuts import redirect
+    from .forms import CustomUserForm, ProfileEditForm
+    from django.shortcuts import redirect, render
     user = request.user
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, instance=user)
-        if form.is_valid():
-            form.save()
+        user_form = CustomUserForm(request.POST, instance=user)
+        profile_form = ProfileEditForm(request.POST, request.FILES, instance=user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
             return redirect('profile')
     else:
-        form = UserProfileForm(instance=user)
-    return render(request, 'accounts/profile_edit.html', {'form': form})
+        user_form = CustomUserForm(instance=user)
+        profile_form = ProfileEditForm(instance=user.profile)
+    return render(request, 'accounts/profile_edit.html', {'user_form': user_form, 'profile_form': profile_form})
 # --- End profile_edit view ---

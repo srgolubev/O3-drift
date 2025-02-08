@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+            <h1 class="display-4 mb-4">Drift Competition Portal</h1>
+            <p class="lead mb-4">Платформа для организации и проведения соревнований по дрифту</p>
+            
+            <div class="row justify-content-center g-4">
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Организации</h5>
+                            <p class="card-text">Просмотр организаций и их соревнований</p>
+                            <a href="{% url 'organizations' %}" class="btn btn-primary">Перейти</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Соревнования</h5>
+                            <p class="card-text">Все активные соревнования</p>
+                            <a href="{% url 'competitions' %}" class="btn btn-primary">Перейти</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

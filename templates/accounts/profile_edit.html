@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header text-center">
+                    <h2 class="mb-0">Редактирование профиля</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data" id="profile-form">
+                        {% csrf_token %}
+                        
+                        <!-- Превью изображений -->
+                        <div class="row mb-4">
+                            <div class="col-md-6 text-center">
+                                <h5 class="mb-3">Аватар</h5>
+                                <div class="mb-3">
+                                    {% if user.profile.avatar %}
+                                        <img src="{{ user.profile.avatar.url }}" alt="Avatar Preview" id="avatar-preview" 
+                                             class="rounded-circle mb-2" style="width: 150px; height: 150px; object-fit: cover;">
+                                    {% else %}
+                                        <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mx-auto mb-2"
+                                             id="avatar-preview-placeholder" style="width: 150px; height: 150px;">
+                                            <span class="text-white">Нет аватара</span>
+                                        </div>
+                                    {% endif %}
+                                    <div class="mt-2">
+                                        {{ profile_form.avatar }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <h5 class="mb-3">Фото для соревнований</h5>
+                                <div class="mb-3">
+                                    {% if user.profile.competition_photo %}
+                                        <img src="{{ user.profile.competition_photo.url }}" alt="Competition Photo Preview" 
+                                             id="competition-preview" class="img-fluid rounded mb-2" 
+                                             style="max-height: 150px; width: auto;">
+                                    {% else %}
+                                        <div class="bg-secondary d-flex align-items-center justify-content-center rounded mb-2"
+                                             id="competition-preview-placeholder" style="height: 150px;">
+                                            <span class="text-white">Нет фото</span>
+                                        </div>
+                                    {% endif %}
+                                    <div class="mt-2">
+                                        {{ profile_form.competition_photo }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Основные данные -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="mb-0">Основные данные</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    {% for field in user_form %}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label">{{ field.label }}</label>
+                                                {{ field }}
+                                                {% if field.errors %}
+                                                    <div class="text-danger small">{{ field.errors }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Данные профиля -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="mb-0">Данные профиля</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    {% for field in profile_form %}
+                                        {% if field.name != 'avatar' and field.name != 'competition_photo' %}
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">{{ field.label }}</label>
+                                                    {{ field }}
+                                                    {% if field.errors %}
+                                                        <div class="text-danger small">{{ field.errors }}</div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary px-4 py-2">
+                                Сохранить изменения
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Скрипт для превью изображений -->
+<script>
+    function setupImagePreview(inputId, previewId, placeholderId) {
+        const input = document.getElementById(inputId);
+        if (!input) return;
+
+        input.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById(previewId);
+                    const placeholder = document.getElementById(placeholderId);
+                    
+                    if (!preview) {
+                        // Создаем новый элемент превью
+                        const newPreview = document.createElement('img');
+                        newPreview.id = previewId;
+                        newPreview.className = inputId.includes('avatar') ? 
+                            'rounded-circle mb-2' : 'img-fluid rounded mb-2';
+                        newPreview.style = inputId.includes('avatar') ?
+                            'width: 150px; height: 150px; object-fit: cover;' :
+                            'max-height: 150px; width: auto;';
+                        placeholder.parentNode.insertBefore(newPreview, placeholder);
+                        placeholder.style.display = 'none';
+                        newPreview.src = e.target.result;
+                    } else {
+                        preview.src = e.target.result;
+                        if (placeholder) placeholder.style.display = 'none';
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    // Инициализация превью для обоих полей
+    document.addEventListener('DOMContentLoaded', function() {
+        setupImagePreview('id_avatar', 'avatar-preview', 'avatar-preview-placeholder');
+        setupImagePreview('id_competition_photo', 'competition-preview', 'competition-preview-placeholder');
+        
+        // Добавляем классы Bootstrap к полям формы
+        document.querySelectorAll('input[type="text"], input[type="email"], input[type="password"], textarea').forEach(input => {
+            input.classList.add('form-control');
+        });
+        document.querySelectorAll('select').forEach(select => {
+            select.classList.add('form-select');
+        });
+        document.querySelectorAll('input[type="file"]').forEach(input => {
+            input.classList.add('form-control');
+        });
+    });
+</script>
+{% endblock %}

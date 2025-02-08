@@ -17,12 +17,31 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
-from core.views.organization_create import organization_create
+from core.views.organizations import organizations_list, organization_create, organization_detail, organization_edit
+from core.views.competitions import competitions_list, competition_create, competition_detail, competition_edit, competition_cancel
+from core.views.stages import stage_create, stage_detail, stage_edit
 
 urlpatterns = [
     path('', views.home, name='home'),
     path('admin/', admin.site.urls),
     path('api/', include('core.api.urls')),
     path('accounts/', include('accounts.urls')),
+    path('organizations/', organizations_list, name='organizations'),
     path('organizations/create/', organization_create, name='organization_create'),
+    path('organizations/<int:org_id>/', organization_detail, name='organization_detail'),
+    path('organizations/<int:org_id>/edit/', organization_edit, name='organization_edit'),
+    path('competitions/', competitions_list, name='competitions'),
+    path('organizations/<int:org_id>/competitions/create/', competition_create, name='competition_create'),
+    path('competitions/<int:comp_id>/', competition_detail, name='competition_detail'),
+    path('competitions/<int:comp_id>/edit/', competition_edit, name='competition_edit'),
+    path('competitions/<int:comp_id>/cancel/', competition_cancel, name='competition_cancel'),
+    path('competitions/<int:comp_id>/stages/create/', stage_create, name='stage_create'),
+    path('stages/<int:stage_id>/', stage_detail, name='stage_detail'),
+    path('stages/<int:stage_id>/edit/', stage_edit, name='stage_edit'),
 ]
+
+from django.conf import settings
+from django.conf.urls.static import static
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

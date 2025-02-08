@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{% url 'organizations' %}" class="text-decoration-none">Организации</a></li>
+<li class="breadcrumb-item"><a href="{% url 'organization_detail' competition.organization.id %}" class="text-decoration-none">{{ competition.organization.name }}</a></li>
+<li class="breadcrumb-item"><a href="{% url 'competition_detail' competition.id %}" class="text-decoration-none">{{ competition.name }}</a></li>
+<li class="breadcrumb-item active" aria-current="page">Редактирование</li>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header text-center">
+                    <h2 class="mb-0">Редактирование соревнования</h2>
+                    <p class="text-muted mb-0">{{ competition.organization.name }}</p>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <!-- Основная информация -->
+                        <div class="mb-4">
+                            <div class="form-group mb-3">
+                                <label class="form-label">{{ form.name.label }}</label>
+                                {{ form.name }}
+                                {% if form.name.errors %}
+                                    <div class="text-danger small">{{ form.name.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label class="form-label">{{ form.platform.label }}</label>
+                                {{ form.platform }}
+                                {% if form.platform.errors %}
+                                    <div class="text-danger small">{{ form.platform.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label class="form-label">{{ form.description.label }}</label>
+                                {{ form.description }}
+                                {% if form.description.errors %}
+                                    <div class="text-danger small">{{ form.description.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label class="form-label">{{ form.rules.label }}</label>
+                                {{ form.rules }}
+                                {% if form.rules.errors %}
+                                    <div class="text-danger small">{{ form.rules.errors }}</div>
+                                {% endif %}
+                                <div class="form-text">Опишите правила проведения соревнования</div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">{{ form.start_date.label }}</label>
+                                        {{ form.start_date }}
+                                        {% if form.start_date.errors %}
+                                            <div class="text-danger small">{{ form.start_date.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">{{ form.end_date.label }}</label>
+                                        {{ form.end_date }}
+                                        {% if form.end_date.errors %}
+                                            <div class="text-danger small">{{ form.end_date.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <div class="form-check">
+                                    {{ form.is_active }}
+                                    <label class="form-check-label" for="{{ form.is_active.id_for_label }}">
+                                        {{ form.is_active.label }}
+                                    </label>
+                                </div>
+                                {% if form.is_active.errors %}
+                                    <div class="text-danger small">{{ form.is_active.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'competition_detail' competition.id %}" class="btn btn-secondary">
+                                Отмена
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                Сохранить изменения
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Добавляем классы Bootstrap к полям формы
+        document.querySelectorAll('input[type="text"], input[type="date"], textarea').forEach(input => {
+            input.classList.add('form-control');
+        });
+        
+        // Инициализируем текстовый редактор для правил, если нужно
+        const rulesTextarea = document.getElementById('id_rules');
+        if (rulesTextarea) {
+            rulesTextarea.style.minHeight = '200px';
+        }
+    });
+</script>
+{% endblock %}

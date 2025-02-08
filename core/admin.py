@@ -11,7 +11,7 @@ class CustomUserAdmin(UserAdmin):
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'nickname', 'first_name', 'last_name', 'vk_id', 'steam_id')
+    list_display = ('user', 'nickname', 'first_name', 'last_name', 'vk', 'steam')
     search_fields = ('user__username', 'nickname', 'first_name', 'last_name')
 
 
@@ -23,15 +23,16 @@ class OrganizationAdmin(admin.ModelAdmin):
 
 @admin.register(Competition)
 class CompetitionAdmin(admin.ModelAdmin):
-    list_display = ('name', 'organization')
+    list_display = ('name', 'organization', 'platform', 'is_active', 'start_date', 'end_date')
+    list_filter = ('is_active', 'platform', 'organization')
     search_fields = ('name', 'organization__name')
 
 
 @admin.register(Stage)
 class StageAdmin(admin.ModelAdmin):
-    list_display = ('name', 'competition', 'registration_open', 'registration_close')
+    list_display = ('name', 'competition', 'registration_start', 'registration_end', 'qualification_start', 'battles_start')
+    list_filter = ('registration_start', 'registration_end', 'qualification_start', 'battles_start')
     search_fields = ('name', 'competition__name')
-    list_filter = ('registration_open', 'registration_close')
 
 
 @admin.register(StageLog)

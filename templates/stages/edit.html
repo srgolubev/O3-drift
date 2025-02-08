@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{% url 'organizations' %}" class="text-decoration-none">Организации</a></li>
+<li class="breadcrumb-item"><a href="{% url 'organization_detail' stage.competition.organization.id %}" class="text-decoration-none">{{ stage.competition.organization.name }}</a></li>
+<li class="breadcrumb-item"><a href="{% url 'competition_detail' stage.competition.id %}" class="text-decoration-none">{{ stage.competition.name }}</a></li>
+<li class="breadcrumb-item"><a href="{% url 'stage_detail' stage.id %}" class="text-decoration-none">{{ stage.name }}</a></li>
+<li class="breadcrumb-item active" aria-current="page">Редактирование</li>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="card shadow">
+        <div class="card-header">
+            <h2 class="mb-0">Редактирование этапа</h2>
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <!-- Основная информация -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Основная информация</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ form.name.id_for_label }}" class="form-label">{{ form.name.label }}</label>
+                            {{ form.name.errors }}
+                            {{ form.name }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.track_name.id_for_label }}" class="form-label">{{ form.track_name.label }}</label>
+                            {{ form.track_name.errors }}
+                            {{ form.track_name }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.track_link.id_for_label }}" class="form-label">{{ form.track_link.label }}</label>
+                            {{ form.track_link.errors }}
+                            {{ form.track_link }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Техническая информация -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Техническая информация</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ form.technical_regulations.id_for_label }}" class="form-label">{{ form.technical_regulations.label }}</label>
+                            {{ form.technical_regulations.errors }}
+                            {{ form.technical_regulations }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.tech_reg_file.id_for_label }}" class="form-label">{{ form.tech_reg_file.label }}</label>
+                            {{ form.tech_reg_file.errors }}
+                            {{ form.tech_reg_file }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.judging_criteria.id_for_label }}" class="form-label">{{ form.judging_criteria.label }}</label>
+                            {{ form.judging_criteria.errors }}
+                            {{ form.judging_criteria }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.video_link.id_for_label }}" class="form-label">{{ form.video_link.label }}</label>
+                            {{ form.video_link.errors }}
+                            {{ form.video_link }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Регистрация и расписание -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Регистрация и расписание</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ form.registration_slots.id_for_label }}" class="form-label">{{ form.registration_slots.label }}</label>
+                            {{ form.registration_slots.errors }}
+                            {{ form.registration_slots }}
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.registration_start.id_for_label }}" class="form-label">{{ form.registration_start.label }}</label>
+                                {{ form.registration_start.errors }}
+                                {{ form.registration_start }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.registration_end.id_for_label }}" class="form-label">{{ form.registration_end.label }}</label>
+                                {{ form.registration_end.errors }}
+                                {{ form.registration_end }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.qualification_start.id_for_label }}" class="form-label">{{ form.qualification_start.label }}</label>
+                                {{ form.qualification_start.errors }}
+                                {{ form.qualification_start }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.battles_start.id_for_label }}" class="form-label">{{ form.battles_start.label }}</label>
+                                {{ form.battles_start.errors }}
+                                {{ form.battles_start }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Персонал -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Персонал</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.judges_ids.id_for_label }}" class="form-label">{{ form.judges_ids.label }}</label>
+                                {{ form.judges_ids.errors }}
+                                {{ form.judges_ids }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.marshals_ids.id_for_label }}" class="form-label">{{ form.marshals_ids.label }}</label>
+                                {{ form.marshals_ids.errors }}
+                                {{ form.marshals_ids }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.commentators_ids.id_for_label }}" class="form-label">{{ form.commentators_ids.label }}</label>
+                                {{ form.commentators_ids.errors }}
+                                {{ form.commentators_ids }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ form.streamers_ids.id_for_label }}" class="form-label">{{ form.streamers_ids.label }}</label>
+                                {{ form.streamers_ids.errors }}
+                                {{ form.streamers_ids }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 d-flex justify-content-between">
+                    <div>
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                        <a href="{% url 'stage_detail' stage.id %}" class="btn btn-outline-secondary ms-2">Отмена</a>
+                    </div>
+                    {% if stage.judging_criteria %}
+                        <div class="text-end">
+                            <a href="{{ stage.judging_criteria.url }}" class="btn btn-outline-info" target="_blank">
+                                <i class="fas fa-eye me-2"></i>Просмотреть судейское задание
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

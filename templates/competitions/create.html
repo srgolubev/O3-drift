@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{% url 'organizations' %}" class="text-decoration-none">Организации</a></li>
+<li class="breadcrumb-item"><a href="{% url 'organization_detail' organization.id %}" class="text-decoration-none">{{ organization.name }}</a></li>
+<li class="breadcrumb-item active" aria-current="page">Создание соревнования</li>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header text-center">
+                    <h2 class="mb-0">Создание соревнования</h2>
+                    <p class="text-muted mb-0">{{ organization.name }}</p>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Основная информация -->
+                        <div class="mb-4">
+                            <div class="form-group mb-3">
+                                <label class="form-label">{{ form.name.label }}</label>
+                                {{ form.name }}
+                                {% if form.name.errors %}
+                                    <div class="text-danger small">{{ form.name.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label class="form-label">{{ form.platform.label }}</label>
+                                {{ form.platform }}
+                                {% if form.platform.errors %}
+                                    <div class="text-danger small">{{ form.platform.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label class="form-label">{{ form.description.label }}</label>
+                                {{ form.description }}
+                                {% if form.description.errors %}
+                                    <div class="text-danger small">{{ form.description.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">{{ form.start_date.label }}</label>
+                                        {{ form.start_date }}
+                                        {% if form.start_date.errors %}
+                                            <div class="text-danger small">{{ form.start_date.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">{{ form.end_date.label }}</label>
+                                        {{ form.end_date }}
+                                        {% if form.end_date.errors %}
+                                            <div class="text-danger small">{{ form.end_date.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label class="form-label">{{ form.rules.label }}</label>
+                                {{ form.rules }}
+                                {% if form.rules.errors %}
+                                    <div class="text-danger small">{{ form.rules.errors }}</div>
+                                {% endif %}
+                                <div class="form-text">Опишите правила проведения соревнования</div>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <div class="form-check">
+                                    {{ form.is_active }}
+                                    <label class="form-check-label" for="{{ form.is_active.id_for_label }}">
+                                        {{ form.is_active.label }}
+                                    </label>
+                                </div>
+                                {% if form.is_active.errors %}
+                                    <div class="text-danger small">{{ form.is_active.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary px-4 py-2">
+                                Создать соревнование
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Добавляем классы Bootstrap к полям формы
+        document.querySelectorAll('input[type="text"], input[type="date"], textarea').forEach(input => {
+            input.classList.add('form-control');
+        });
+        
+        // Инициализируем текстовый редактор для правил, если нужно
+        const rulesTextarea = document.getElementById('id_rules');
+        if (rulesTextarea) {
+            rulesTextarea.style.minHeight = '200px';
+        }
+    });
+</script>
+{% endblock %}

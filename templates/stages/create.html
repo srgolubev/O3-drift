@@ -1,0 +1,238 @@
+{% extends 'base.html' %}
+
+{% block breadcrumbs %}
+<li class="breadcrumb-item"><a href="{% url 'organizations' %}" class="text-decoration-none">Организации</a></li>
+<li class="breadcrumb-item"><a href="{% url 'organization_detail' competition.organization.id %}" class="text-decoration-none">{{ competition.organization.name }}</a></li>
+<li class="breadcrumb-item"><a href="{% url 'competition_detail' competition.id %}" class="text-decoration-none">{{ competition.name }}</a></li>
+<li class="breadcrumb-item active" aria-current="page">Создание этапа</li>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header text-center">
+                    <h2 class="mb-0">Создание этапа</h2>
+                    <p class="text-muted mb-0">{{ competition.name }}</p>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Основная информация -->
+                        <div class="mb-4">
+                            <div class="form-group mb-3">
+                                <label class="form-label">{{ form.name.label }}</label>
+                                {{ form.name }}
+                                {% if form.name.errors %}
+                                    <div class="text-danger small">{{ form.name.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Трасса -->
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Информация о трассе</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">{{ form.track_name.label }}</label>
+                                        {{ form.track_name }}
+                                        {% if form.track_name.errors %}
+                                            <div class="text-danger small">{{ form.track_name.errors }}</div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">{{ form.track_link.label }}</label>
+                                        {{ form.track_link }}
+                                        {% if form.track_link.errors %}
+                                            <div class="text-danger small">{{ form.track_link.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Технический регламент -->
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Технический регламент</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">{{ form.technical_regulations.label }}</label>
+                                        {{ form.technical_regulations }}
+                                        {% if form.technical_regulations.errors %}
+                                            <div class="text-danger small">{{ form.technical_regulations.errors }}</div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">{{ form.tech_reg_file.label }}</label>
+                                        {{ form.tech_reg_file }}
+                                        {% if form.tech_reg_file.errors %}
+                                            <div class="text-danger small">{{ form.tech_reg_file.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Судейское задание -->
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Судейское задание</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">{{ form.judging_criteria.label }}</label>
+                                        {{ form.judging_criteria }}
+                                        {% if form.judging_criteria.errors %}
+                                            <div class="text-danger small">{{ form.judging_criteria.errors }}</div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">{{ form.video_link.label }}</label>
+                                        {{ form.video_link }}
+                                        {% if form.video_link.errors %}
+                                            <div class="text-danger small">{{ form.video_link.errors }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Регистрация -->
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Параметры регистрации</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label">{{ form.registration_slots.label }}</label>
+                                        {{ form.registration_slots }}
+                                        {% if form.registration_slots.errors %}
+                                            <div class="text-danger small">{{ form.registration_slots.errors }}</div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label class="form-label">{{ form.registration_start.label }}</label>
+                                                {{ form.registration_start }}
+                                                {% if form.registration_start.errors %}
+                                                    <div class="text-danger small">{{ form.registration_start.errors }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label class="form-label">{{ form.registration_end.label }}</label>
+                                                {{ form.registration_end }}
+                                                {% if form.registration_end.errors %}
+                                                    <div class="text-danger small">{{ form.registration_end.errors }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Расписание -->
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Расписание этапа</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label class="form-label">{{ form.qualification_start.label }}</label>
+                                                {{ form.qualification_start }}
+                                                {% if form.qualification_start.errors %}
+                                                    <div class="text-danger small">{{ form.qualification_start.errors }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group mb-3">
+                                                <label class="form-label">{{ form.battles_start.label }}</label>
+                                                {{ form.battles_start }}
+                                                {% if form.battles_start.errors %}
+                                                    <div class="text-danger small">{{ form.battles_start.errors }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Персонал -->
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Персонал</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="{{ form.judges_ids.id_for_label }}" class="form-label">{{ form.judges_ids.label }}</label>
+                                            {{ form.judges_ids.errors }}
+                                            {{ form.judges_ids }}
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="{{ form.marshals_ids.id_for_label }}" class="form-label">{{ form.marshals_ids.label }}</label>
+                                            {{ form.marshals_ids.errors }}
+                                            {{ form.marshals_ids }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="{{ form.commentators_ids.id_for_label }}" class="form-label">{{ form.commentators_ids.label }}</label>
+                                            {{ form.commentators_ids.errors }}
+                                            {{ form.commentators_ids }}
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="{{ form.streamers_ids.id_for_label }}" class="form-label">{{ form.streamers_ids.label }}</label>
+                                            {{ form.streamers_ids.errors }}
+                                            {{ form.streamers_ids }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'competition_detail' competition.id %}" class="btn btn-secondary">
+                                Отмена
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                Создать этап
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Добавляем классы Bootstrap к полям формы
+        document.querySelectorAll('input[type="text"], input[type="number"], input[type="url"], textarea').forEach(input => {
+            input.classList.add('form-control');
+        });
+
+        // Стилизуем поля для загрузки файлов
+        document.querySelectorAll('input[type="file"]').forEach(input => {
+            input.classList.add('form-control');
+        });
+
+        // Стилизуем поля даты и времени
+        document.querySelectorAll('input[type="datetime-local"]').forEach(input => {
+            input.classList.add('form-control');
+        });
+    });
+</script>
+{% endblock %}
