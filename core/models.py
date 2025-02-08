@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 import uuid
+from datetime import date
+from django.conf import settings
 
 class CustomUserManager(BaseUserManager):
     use_in_migrations = True
@@ -64,6 +66,7 @@ class Profile(models.Model):
     last_name = models.CharField(max_length=100, blank=True, null=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
     competition_photo = models.ImageField(upload_to='competition_photos/', blank=True, null=True)
+    bio = models.TextField(blank=True)
     country = models.CharField(max_length=100, blank=True, null=True)
     city = models.CharField(max_length=100, blank=True, null=True)
     birth_year = models.IntegerField(blank=True, null=True)
@@ -72,7 +75,7 @@ class Profile(models.Model):
     vk_id = models.CharField(max_length=100, blank=True, null=True)
     
     def __str__(self):
-        return f"Profile of {self.user.username}"
+        return self.user.username
 
 
 class Organization(models.Model):
@@ -80,7 +83,13 @@ class Organization(models.Model):
     abbreviation = models.CharField(max_length=50)
     description = models.TextField(blank=True)
     logo = models.ImageField(upload_to='organization_logos/', blank=True, null=True)
-    organizer = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='organizations')
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name='Организатор'
+    )
 
     def __str__(self):
         return self.name
@@ -88,6 +97,8 @@ class Organization(models.Model):
 
 class Competition(models.Model):
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='competitions')
+    start_date = models.DateField(default=date.today)
+    end_date = models.DateField(default=date.today)
     name = models.CharField(max_length=255)
     cover = models.ImageField(upload_to='competition_covers/', blank=True, null=True)
     rules = models.TextField(blank=True)

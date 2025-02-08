@@ -17,9 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+from core.views.organization_create import organization_create
 
 urlpatterns = [
     path('', views.home, name='home'),
     path('admin/', admin.site.urls),
     path('api/', include('core.api.urls')),
+    path('accounts/', include('accounts.urls')),
+    path('organizations/create/', organization_create, name='organization_create'),
 ]

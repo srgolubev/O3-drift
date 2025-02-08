@@ -17,7 +17,7 @@ class ProfileAdmin(admin.ModelAdmin):
 
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'abbreviation', 'organizer')
+    list_display = ('name', 'abbreviation')
     search_fields = ('name', 'abbreviation')
 
 
