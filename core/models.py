@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils import timezone
 from datetime import date
 from django.conf import settings
+from django.core.exceptions import ValidationError
 import random
 import string
 
@@ -124,6 +125,11 @@ class Competition(models.Model):
     leaders = models.ManyToManyField(CustomUser, related_name='leader_competitions', blank=True, verbose_name='Руководители')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def clean(self):
+        super().clean()
+        if self.start_date and self.end_date and self.start_date >= self.end_date:
+            raise ValidationError('Дата начала должна быть раньше даты окончания')
 
     def __str__(self):
         return self.name

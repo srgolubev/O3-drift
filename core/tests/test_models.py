@@ -12,43 +12,115 @@ from core.models import (
 User = get_user_model()
 
 
-class ModelsTestCase(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.org = Organization.objects.create(
+class OrganizationTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username='organizer',
+            password='testpass',
+            email='organizer@example.com'
+        )
+        self.org = Organization.objects.create(
             name='Test Organization',
-            description='A test organization'
-        )
-        cls.comp = Competition.objects.create(
-            name='Test Competition',
-            organization=cls.org,
-            start_date=date(2025, 1, 1),
-            end_date=date(2025, 1, 31),
-            description='A test competition'
-        )
-        cls.user = User.objects.create_user(username='testuser', password='testpass', email='test@example.com')
-        cls.profile, _ = Profile.objects.get_or_create(
-            user=cls.user, defaults={'bio': 'This is a test bio'}
+            description='A test organization',
+            created_by=self.user
         )
 
-    def setUp(self):
-        self.org = self.__class__.org
-        self.comp = self.__class__.comp
-        self.user = self.__class__.user
-        self.profile = self.__class__.profile
+    def test_organization_creation(self):
+        self.assertEqual(self.org.name, 'Test Organization')
+        self.assertEqual(self.org.description, 'A test organization')
+        self.assertEqual(self.org.created_by, self.user)
 
     def test_organization_str(self):
         self.assertEqual(str(self.org), 'Test Organization')
 
+    def test_organization_competitions(self):
+        comp1 = Competition.objects.create(
+            name='Competition 1',
+            organization=self.org,
+            start_date=date(2025, 1, 1),
+            end_date=date(2025, 1, 31)
+        )
+        comp2 = Competition.objects.create(
+            name='Competition 2',
+            organization=self.org,
+            start_date=date(2025, 2, 1),
+            end_date=date(2025, 2, 28)
+        )
+
+        competitions = self.org.competitions.all()
+        self.assertEqual(len(competitions), 2)
+        self.assertIn(comp1, competitions)
+        self.assertIn(comp2, competitions)
+
+
+class CompetitionTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username='organizer',
+            password='testpass',
+            email='organizer@example.com'
+        )
+        self.org = Organization.objects.create(
+            name='Test Organization',
+            created_by=self.user
+        )
+        self.comp = Competition.objects.create(
+            name='Test Competition',
+            organization=self.org,
+            start_date=date(2025, 1, 1),
+            end_date=date(2025, 1, 31),
+            description='A test competition',
+            platform='Assetto Corsa'
+        )
+
+    def test_competition_creation(self):
+        self.assertEqual(self.comp.name, 'Test Competition')
+        self.assertEqual(self.comp.organization, self.org)
+        self.assertEqual(self.comp.platform, 'Assetto Corsa')
+
     def test_competition_str(self):
         self.assertEqual(str(self.comp), 'Test Competition')
 
-    def test_profile_str(self):
-        self.assertEqual(str(self.profile), 'testuser')
+    def test_competition_dates(self):
+        # Проверяем, что дата начала раньше даты окончания
+        self.assertTrue(self.comp.start_date < self.comp.end_date)
 
-    def test_relationships(self):
-        # Проверяем, что соревнование корректно связано с организацией
-        self.assertIn(self.comp, self.org.competitions.all())
+        # Проверяем ошибку при неправильных датах
+        with self.assertRaises(ValidationError):
+            comp = Competition.objects.create(
+                name='Invalid Competition',
+                organization=self.org,
+                start_date=date(2025, 2, 1),
+                end_date=date(2025, 1, 1)
+            )
+            comp.full_clean()
+
+    def test_competition_status(self):
+        # Проверяем статусы соревнования
+        self.comp.is_canceled = True
+        self.comp.save()
+        self.assertTrue(self.comp.is_canceled)
+
+        self.comp.is_canceled = False
+        self.comp.save()
+        self.assertFalse(self.comp.is_canceled)
+
+    def test_competition_stages(self):
+        stage1 = Stage.objects.create(
+            competition=self.comp,
+            name='Stage 1',
+            track_name='Track 1'
+        )
+        stage2 = Stage.objects.create(
+            competition=self.comp,
+            name='Stage 2',
+            track_name='Track 2'
+        )
+
+        stages = self.comp.stages.all()
+        self.assertEqual(len(stages), 2)
+        self.assertIn(stage1, stages)
+        self.assertIn(stage2, stages)
 
 
 class StageTestCase(TestCase):
