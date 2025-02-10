@@ -22,8 +22,9 @@ class OrganizationForm(ModelForm):
 
 @login_required
 def organization_create(request):
-    if not request.user.profile.is_organizer:
-        messages.error(request, 'У вас нет прав для создания организации')
+    # Проверяем, что пользователь в группе организаторов
+    if not request.user.groups.filter(name='Организаторы').exists():
+        messages.error(request, 'Только организаторы могут создавать организации')
         return redirect('profile')
 
     if request.method == 'POST':
