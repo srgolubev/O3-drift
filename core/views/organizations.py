@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django import forms
 from django.forms import ModelForm
 from django.core.exceptions import PermissionDenied
 from core.models import Organization
@@ -18,6 +19,12 @@ class OrganizationForm(ModelForm):
             'abbreviation': 'Аббревиатура',
             'description': 'Описание',
             'logo': 'Логотип'
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'abbreviation': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'logo': forms.FileInput(attrs={'class': 'form-control'})
         }
 
 @login_required
