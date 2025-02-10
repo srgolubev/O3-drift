@@ -24,12 +24,22 @@ def register(request):
 @login_required
 def profile(request):
     # Показываем организации только если пользователь в группе организаторов
-    is_organizer = request.user.groups.filter(name='Организаторы').exists()
-    organizations = Organization.objects.filter(created_by=request.user) if is_organizer else None
-    return render(request, 'accounts/profile.html', {
-        'organizations': organizations,
-        'is_organizer': is_organizer
-    })
+    import logging
+    logger = logging.getLogger(__name__)
+    
+    try:
+        is_organizer = request.user.groups.filter(name='Организаторы').exists()
+        organizations = Organization.objects.filter(created_by=request.user) if is_organizer else None
+        
+        logger.error(f'User: {request.user}, is_organizer: {is_organizer}, organizations: {organizations}')
+        
+        return render(request, 'accounts/profile.html', {
+            'organizations': organizations,
+            'is_organizer': is_organizer
+        })
+    except Exception as e:
+        logger.error(f'Error in profile view: {str(e)}')
+        raise
 
 # --- Begin profile_edit view ---
 @login_required
