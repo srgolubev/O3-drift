@@ -1,0 +1,386 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2025-02-07T23:10:54.193Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "4",
+    "object_repr": "Tor",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Staff status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2025-02-07T23:12:04.728Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "4",
+    "object_repr": "Tor",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Staff status\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2025-02-07T23:12:07.955Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "3",
+    "object_repr": "Tor",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2025-02-07T23:15:12.754Z",
+    "user": 1,
+    "content_type": 3,
+    "object_id": "1",
+    "object_repr": "Organizers",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2025-02-07T23:15:57.552Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "4",
+    "object_repr": "Tor",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Groups\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2025-02-07T23:16:09.319Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "4",
+    "object_repr": "Tor",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2025-02-07T23:16:13.521Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "3",
+    "object_repr": "Tor",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2025-02-08T17:58:31.883Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "3",
+    "object_repr": "Tora",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Is organizer\", \"Is admin\"]}}]"
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 1,
+  "fields": {
+    "name": "Organizers",
+    "permissions": [
+      25,
+      26,
+      27,
+      28,
+      49,
+      50,
+      51,
+      52,
+      41,
+      42,
+      43,
+      44,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36
+    ]
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "0goz1hzaohdhh0b688bo4ivvyl2s6fqc",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGlk2zvpDSZ8zRLveNQ6gRIqTCnF3iJQC2jcz76UG3NY6bE2WYWR1UZ06_W6E-SHTDviO023WeZ7WZSS9K_qgTfczy_N6uH8HFVv91u4sSQQicAEoxniXHHvjLUmUDiyQw0wGfAgswZpIWNAkB5EShxzV-wPZcjez:1tgt1a:--ugUi-SCKdd8OwfhN6r0aeYaUpvwYftM1TbZOsTfPQ",
+    "expire_date": "2025-02-22T22:10:06.954Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "rozi1tsbip44xv3slntz9hf6nwoes35k",
+  "fields": {
+    "session_data": ".eJxVjEsOwiAUAO_C2hDkFXi4dN8zEB4fqRpISrsy3l1JutDtzGRezPl9K27vaXVLZBd2ZqdfRj48Uh0i3n29NR5a3daF-Ej4YTufW0zP69H-DYrvZWxFQIFWgRJSKjKSEGQkBRgm0CisJQs5m0kQZgXSkNaQrP-WMVlM7P0Bo-U2yg:1tgAxs:LmKCf3DxjLcTJPwxTwLqvAP59729zTE2fNq24tLOL-k",
+    "expire_date": "2025-02-20T23:07:20.483Z"
+  }
+},
+{
+  "model": "core.customuser",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$3v7PgUMQVO848IATeCdgvE$oAoYQezKd2XiGYu02HsXnMGzp946zm95Sy8J/m2J+8A=",
+    "last_login": "2025-02-08T17:57:44.771Z",
+    "is_superuser": true,
+    "username": "mduck",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-02-06T16:12:30.910Z",
+    "email": "mduck@example.com",
+    "public_id": "N0B286W9",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.customuser",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$qsRQKSuAgDVB9k7KXNI7cH$45j+st6K2LHeJ/shHdjQ+UCylqMSnMfMSXWO699vwa8=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "Masterok",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-02-07T09:45:41.135Z",
+    "email": "0g2@bk.ru",
+    "public_id": "OKKCWRVK",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.customuser",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$aHN6vBs6pkJxEop8fSB1qc$3Ll0sPWo39wEdYCTNGfaUPEgyz878caQf6xUqC/2Kfg=",
+    "last_login": "2025-02-08T17:57:35.341Z",
+    "is_superuser": false,
+    "username": "0g_2",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-02-07T22:55:29.346Z",
+    "email": "drapper@ya.ru",
+    "public_id": "14H1G1UD",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.customuser",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$j8hl9lBbtgMdpZHRXoUPtY$nNxVmINLvd9EGKmTuMSgPYoKzHWYaIxgHx1aLfgFXgk=",
+    "last_login": "2025-02-08T22:10:06.952Z",
+    "is_superuser": false,
+    "username": "Tora",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-02-07T22:58:40Z",
+    "email": "tor@mail.ru",
+    "public_id": "JBDR4UBY",
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.profile",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "nickname": "",
+    "first_name": "",
+    "last_name": "",
+    "avatar": "",
+    "competition_photo": "",
+    "bio": "",
+    "country": "",
+    "city": "",
+    "birth_year": null,
+    "biography": "",
+    "steam": "",
+    "vk": "",
+    "is_organizer": false
+  }
+},
+{
+  "model": "core.profile",
+  "pk": 2,
+  "fields": {
+    "user": 3,
+    "nickname": "",
+    "first_name": "",
+    "last_name": "",
+    "avatar": "",
+    "competition_photo": "",
+    "bio": "",
+    "country": "",
+    "city": "",
+    "birth_year": null,
+    "biography": "",
+    "steam": "",
+    "vk": "",
+    "is_organizer": false
+  }
+},
+{
+  "model": "core.profile",
+  "pk": 3,
+  "fields": {
+    "user": 4,
+    "nickname": "Driver",
+    "first_name": "Serg",
+    "last_name": "Sergeev",
+    "avatar": "profiles/avatars/sgg_hunt_LE_upscale_balanced_x4_light_ai_30.jpeg",
+    "competition_photo": "profiles/competitions/1312313.jpg",
+    "bio": "",
+    "country": "Russia",
+    "city": "Krasnoyarsk",
+    "birth_year": 1987,
+    "biography": "",
+    "steam": "",
+    "vk": "",
+    "is_organizer": false
+  }
+},
+{
+  "model": "core.organization",
+  "pk": 1,
+  "fields": {
+    "name": "Experimental Drift League",
+    "abbreviation": "EDL",
+    "description": "Эээээксперимент!",
+    "logo": "organization_logos/edl.jpg",
+    "created_by": 4
+  }
+},
+{
+  "model": "core.competition",
+  "pk": 1,
+  "fields": {
+    "organization": 1,
+    "name": "EDL 2025",
+    "platform": "Virtual",
+    "description": "EDL is back",
+    "rules": "No limits",
+    "start_date": "2025-02-08",
+    "end_date": "2025-05-08",
+    "is_active": false,
+    "cover": "",
+    "created_at": "2025-02-08T19:58:12.890Z",
+    "updated_at": "2025-02-08T21:22:04.504Z",
+    "leaders": []
+  }
+},
+{
+  "model": "core.competition",
+  "pk": 2,
+  "fields": {
+    "organization": 1,
+    "name": "EDL 2025",
+    "platform": "Virtual",
+    "description": "EDL is back",
+    "rules": "No limits",
+    "start_date": "2025-02-08",
+    "end_date": "2025-05-08",
+    "is_active": true,
+    "cover": "",
+    "created_at": "2025-02-08T19:59:39.001Z",
+    "updated_at": "2025-02-08T21:28:15.422Z",
+    "leaders": []
+  }
+},
+{
+  "model": "core.competition",
+  "pk": 3,
+  "fields": {
+    "organization": 1,
+    "name": "EDL 2025",
+    "platform": "Virtual",
+    "description": "EDL is back",
+    "rules": "No limits",
+    "start_date": "2025-02-09",
+    "end_date": "2025-05-08",
+    "is_active": false,
+    "cover": "",
+    "created_at": "2025-02-08T20:02:28.926Z",
+    "updated_at": "2025-02-08T21:21:47.523Z",
+    "leaders": []
+  }
+},
+{
+  "model": "core.stage",
+  "pk": 1,
+  "fields": {
+    "competition": 2,
+    "name": "Этап 1",
+    "track_name": "San Palezzo",
+    "track_link": null,
+    "technical_regulations": "265/18/35",
+    "tech_reg_file": "",
+    "judging_criteria": "judging_criteria/Judge.png.jpg",
+    "video_link": "https://www.youtube.com/watch?v=2upzqYe_sfs",
+    "registration_slots": 50,
+    "registration_start": "2025-02-10T08:00:00Z",
+    "registration_end": "2025-02-14T21:00:00Z",
+    "qualification_start": "2025-02-15T12:00:00Z",
+    "battles_start": "2025-02-16T12:00:00Z",
+    "created_at": "2025-02-08T21:28:08.314Z",
+    "updated_at": "2025-02-08T21:28:08.314Z",
+    "judges": [
+      2
+    ],
+    "marshals": [
+      3
+    ],
+    "commentators": [],
+    "streamers": [
+      1
+    ],
+    "participants": []
+  }
+}
+]

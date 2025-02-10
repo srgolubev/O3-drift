@@ -23,8 +23,13 @@ def register(request):
 
 @login_required
 def profile(request):
-    organizations = Organization.objects.filter(created_by=request.user)
-    return render(request, 'accounts/profile.html', {'organizations': organizations})
+    # Показываем организации только если пользователь в группе организаторов
+    is_organizer = request.user.groups.filter(name='Организаторы').exists()
+    organizations = Organization.objects.filter(created_by=request.user) if is_organizer else None
+    return render(request, 'accounts/profile.html', {
+        'organizations': organizations,
+        'is_organizer': is_organizer
+    })
 
 # --- Begin profile_edit view ---
 @login_required

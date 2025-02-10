@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.forms import ModelForm
+from django.core.exceptions import PermissionDenied
 from core.models import Organization
 
 def organizations_list(request):
